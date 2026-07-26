@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Luyện Tập Tiếng Anh - Ms Lê Hằng English</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Nunito', sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(-45deg, #8854C0, #FDCB6E, #00C9A7, #e73c7e);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      position: relative;
+      padding: 20px;
+      color: #2d3436;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    /* SVG Pattern Overlay */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 100 100"><text x="10" y="30" font-size="20">⭐</text><text x="50" y="70" font-size="20">🌸</text><text x="70" y="25" font-size="20">🐱</text><text x="20" y="80" font-size="20">🍎</text></svg>');
+      opacity: 0.25;
+      pointer-events: none;
+      z-index: 0;
+      animation: floatPattern 20s linear infinite;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @keyframes floatPattern {
+      0% { background-position: 0 0; }
+      100% { background-position: 100px 100px; }
+    }
+
+    .container {
+      max-width: 800px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 24px;
+      padding: 30px 24px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.2), 0 5px 15px rgba(0,0,0,0.07);
+      position: relative;
+      z-index: 1;
+      margin-top: 10px;
+      margin-bottom: 30px;
+    }
+
+    /* Header tác giả */
+    .header-author {
+      text-align: center;
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: #8854C0;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+      background: #F0E6FF;
+      display: inline-block;
+      padding: 4px 16px;
+      border-radius: 50px;
+    }
+
+    .header-container {
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    /* Warning Box */
+    .warning-box {
+      background: #FFF3CD;
+      border: 3px dashed #FFC107;
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 25px;
+      text-align: center;
+      font-weight: 700;
+      color: #856404;
+      box-shadow: 0 4px 0 #ffeBAA;
+    }
+
+    .warning-box h3 {
+      font-size: 1.1rem;
+      margin-bottom: 6px;
+      color: #d39e00;
+    }
+
+    .warning-box p {
+      font-size: 0.95rem;
+      line-height: 1.4;
+    }
+
+    .section-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: #8854C0;
+      margin: 25px 0 15px 0;
+      background: #f7f1ff;
+      padding: 10px 15px;
+      border-radius: 12px;
+      border-left: 5px solid #8854C0;
+    }
+
+    .card {
+      background: #FFFFFF;
+      border: 3px solid #E2E8F0;
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 6px 0 #E2E8F0;
+      transition: transform 0.2s;
+    }
+
+    .card-title {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #2D3748;
+      margin-bottom: 15px;
+      line-height: 1.5;
+    }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .btn-option {
+      background: #FFFFFF;
+      border: 2px solid #CBD5E0;
+      border-radius: 16px;
+      padding: 12px 18px;
+      font-size: 0.98rem;
+      font-weight: 700;
+      color: #4A5568;
+      cursor: pointer;
+      text-align: left;
+      box-shadow: 0 4px 0 #CBD5E0;
+      transition: all 0.1s ease;
+      outline: none;
+      word-break: break-word;
+    }
+
+    .btn-option:hover:not([disabled]) {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 0 #CBD5E0;
+      background: #F7FAFC;
+    }
+
+    .btn-option:active:not([disabled]) {
+      transform: translateY(2px);
+      box-shadow: 0 2px 0 #CBD5E0;
+    }
+
+    .btn-option.correct {
+      background-color: #00D26A !important;
+      border-color: #00B359 !important;
+      color: white !important;
+      box-shadow: 0 4px 0 #00994C !important;
+    }
+
+    .btn-option.wrong {
+      background-color: #FF4757 !important;
+      border-color: #E0303F !important;
+      color: white !important;
+      box-shadow: 0 4px 0 #C42533 !important;
+    }
+
+    /* Explanation Box */
+    .explanation-box {
+      display: none;
+      margin-top: 15px;
+      padding: 16px;
+      background-color: #F0F4FF;
+      border-left: 6px solid #8854C0;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: #2D3748;
+      animation: fadeIn 0.3s ease-in;
+    }
+
+    .explanation-box h4 {
+      color: #8854C0;
+      margin-bottom: 8px;
+      font-size: 1rem;
+    }
+
+    .explanation-box p {
+      margin-bottom: 6px;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .shake {
+      animation: shakeAnim 0.4s ease-in-out;
+    }
+
+    @keyframes shakeAnim {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-8px); }
+      40%, 80% { transform: translateX(8px); }
+    }
+
+    /* Nút Nộp Bài */
+    .submit-btn-container {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .btn-submit {
+      background: linear-gradient(180deg, #00C9A7 0%, #00B359 100%);
+      color: white;
+      border: none;
+      font-size: 1.2rem;
+      font-weight: 900;
+      padding: 16px 40px;
+      border-radius: 50px;
+      box-shadow: 0 6px 0 #008040;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .btn-submit:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 9px 0 #008040;
+    }
+
+    .btn-submit:active {
+      transform: translateY(3px);
+      box-shadow: 0 3px 0 #008040;
+    }
+
+    /* Modal Kết Quả */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 24px;
+      max-width: 500px;
+      width: 100%;
+      padding: 30px;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+      animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .modal-title {
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: #8854C0;
+      margin-bottom: 10px;
+    }
+
+    .modal-score {
+      font-size: 2.3rem;
+      font-weight: 900;
+      color: #00D26A;
+      margin: 15px 0;
+    }
+
+    .modal-msg {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #4A5568;
+      line-height: 1.5;
+      margin-bottom: 25px;
+    }
+
+    .modal-btn {
+      background: #8854C0;
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      font-size: 1.1rem;
+      font-weight: 800;
+      border-radius: 50px;
+      box-shadow: 0 4px 0 #6C3FB8;
+      cursor: pointer;
+    }
+
+    .modal-btn:hover {
+      background: #773EC0;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="header-container">
+      <div class="header-author">Giáo viên tạo: Ms Lê Hằng English</div>
+    </div>
+
+    <div class="warning-box">
+      <h3>⚠️ LỜI NHẮC CỰC KỲ QUAN TRỌNG ⚠️</h3>
+      <p>Chỉ có đọc kỹ giải thích ngay sau mỗi câu, sau đó ghi lại từ vựng/cấu trúc mới vào vở để học thì mới thực sự giỏi lên.</p>
+      <p>Làm cho xong mà không đọc giải thích hay đọc qua loa không ghi chép thì chỉ tốn thời gian vô ích!</p>
+      <p style="margin-top: 6px; color: #e67e22;">✨ * Kéo tới đâu, làm tới đó! * ✨</p>
+    </div>
+
+    <div class="section-title">VIII. Rewrite the following sentences based on the given words.</div>
+    <div id="quiz-part8"></div>
+
+    <div class="submit-btn-container">
+      <button class="btn-submit" onclick="submitQuiz()">Nộp Bài Thi 🎯</button>
+    </div>
+  </div>
+
+  <!-- Modal Kết Quả -->
+  <div class="modal-overlay" id="resultModal">
+    <div class="modal-content">
+      <div class="modal-title">TỔNG KẾT BÀI THI</div>
+      <div class="modal-score" id="scoreText">0 / 3</div>
+      <div class="modal-msg" id="teacherMessage"></div>
+      <button class="modal-btn" onclick="closeModal()">Đóng & Xem Lại</button>
+    </div>
+  </div>
+
+  <script>
+    // Web Audio API Sound Generation
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    let audioCtx = null;
+
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new AudioContext();
+      }
+    }
+
+    function playSound(type) {
+      initAudio();
+      if (!audioCtx) return;
+
+      if (type === 'correct') {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); // C5
+        osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.3); // A5
+        gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.3);
+      } else if (type === 'wrong') {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(220, audioCtx.currentTime); // A3
+        osc.frequency.exponentialRampToValueAtTime(130.81, audioCtx.currentTime + 0.4); // C3
+        gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.4);
+      }
+    }
+
+    // Quiz Data
+    const rawQuestions = [
+      {
+        id: 1,
+        section: 8,
+        question: "1. Jack has blonde hair and blue eyes.<br>→ Jack's hair is...",
+        options: [
+          "Jack's hair is blonde and his eyes are blue.",
+          "Jack's hair is blonde and he eyes are blue.",
+          "Jack's hair is blonde and blue eyes.",
+          "Jack's hair is blonde and he has blue eyes."
+        ],
+        correct: 0,
+        explanation: {
+          step1: "Dịch nghĩa: Jack có mái tóc màu vàng và đôi mắt màu xanh dương. → Tóc của Jack màu vàng và mắt của cậu ấy màu xanh dương.",
+          step2: "A. Jack's hair is blonde and his eyes are blue. (Đúng)<br>B. ...he eyes are blue. (Sai vì 'he' là đại từ nhân xưng, phải dùng tính từ sở hữu 'his')<br>C. ...blonde and blue eyes. (Sai vì vế sau thiếu chủ ngữ và động từ 'are')<br>D. ...blonde and he has blue eyes. (Không đồng nhất cấu trúc miêu tả bằng tính từ với động từ to be)",
+          step3: "Cấu trúc chuyển đổi miêu tả ngoại hình: [S + have/has + adj + N1 and adj + N2] ⇔ [S's N1 + is/are + adj and his/her N2 + is/are + adj]. 'hair' là danh từ không đếm được dùng 'is', 'eyes' là danh từ số nhiều dùng 'are'.",
+          step4: "B sai đại từ sở hữu, C thiếu thành phần câu ở vế sau, D không đồng nhất vế câu."
+        }
+      },
+      {
+        id: 2,
+        section: 8,
+        question: "2. The garden is in front of the building.<br>→ The building...",
+        options: [
+          "The building is behind the garden.",
+          "The building is in front of the garden.",
+          "The building is next to the garden.",
+          "The building is near behind the garden."
+        ],
+        correct: 0,
+        explanation: {
+          step1: "Dịch nghĩa: Khu vườn ở phía trước tòa nhà. → Tòa nhà ở phía sau khu vườn.",
+          step2: "A. The building is behind the garden. (Đúng)<br>B. The building is in front of... (Trái ngược nghĩa câu gốc)<br>C. ...next to... (Sai nghĩa: bên cạnh)<br>D. ...near behind... (Sai cấu trúc giới từ)",
+          step3: "Cặp giới từ đối nghĩa chỉ vị trí: 'in front of' (ở phía trước) ⇔ 'behind' (ở phía sau). Khi đảo vị trí tòa nhà lên trước, ta phải dùng giới từ trái ngược 'behind'.",
+          step4: "B giữ nguyên giới từ làm ngược nghĩa, C sai nghĩa, D kết hợp sai hai giới từ cùng lúc."
+        }
+      },
+      {
+        id: 3,
+        section: 8,
+        question: "3. Let's go for a walk in the park!<br>→ How about...",
+        options: [
+          "How about going for a walk in the park?",
+          "How about go for a walk in the park?",
+          "How about to go for a walk in the park?",
+          "How about we going for a walk in the park?"
+        ],
+        correct: 0,
+        explanation: {
+          step1: "Dịch nghĩa: Chúng ta hãy đi dạo trong công viên nhé! → Còn về việc đi dạo trong công viên thì sao?",
+          step2: "A. How about going for a walk in the park? (Đúng)<br>B. How about go... (Sai vì dùng động từ nguyên mẫu)<br>C. How about to go... (Sai vì dùng to-V)<br>D. ...we going... (Sai vì thừa đại từ 'we')",
+          step3: "Cấu trúc đưa ra lời gợi ý/đề nghị: 'Let's + V-bare' chuyển sang 'How about + V-ing?'. Động từ 'go' thêm '-ing' thành 'going'.",
+          step4: "B dùng sai V-bare, C dùng sai to-V, D thừa chủ ngữ 'we' sau 'How about'."
+        }
+      }
+    ];
+
+    function shuffleArray(array) {
+      const arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    let processedQuestions = [];
+    let userAnswers = {};
+
+    function initQuiz() {
+      const p8Container = document.getElementById('quiz-part8');
+      p8Container.innerHTML = '';
+
+      processedQuestions = rawQuestions.map((q) => {
+        const indexedOptions = q.options.map((opt, idx) => ({
+          text: opt,
+          isCorrect: idx === q.correct
+        }));
+
+        return {
+          ...q,
+          shuffledOptions: shuffleArray(indexedOptions)
+        };
+      });
+
+      processedQuestions.forEach((q, index) => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.id = `question-card-${index}`;
+
+        const title = document.createElement('div');
+        title.className = 'card-title';
+        title.innerHTML = q.question;
+        card.appendChild(title);
+
+        const optionsGrid = document.createElement('div');
+        optionsGrid.className = 'options-grid';
+
+        const labels = ['A', 'B', 'C', 'D'];
+        q.shuffledOptions.forEach((opt, optIndex) => {
+          const btn = document.createElement('button');
+          btn.className = 'btn-option';
+          btn.innerHTML = `<strong>${labels[optIndex]}.</strong> ${opt.text}`;
+          btn.onclick = () => handleSelectAnswer(index, optIndex, opt.isCorrect, card);
+          optionsGrid.appendChild(btn);
+        });
+
+        card.appendChild(optionsGrid);
+
+        // Explanation Box
+        const expBox = document.createElement('div');
+        expBox.className = 'explanation-box';
+        expBox.id = `exp-${index}`;
+        expBox.innerHTML = `
+          <h4>💡 PHẦN GIẢI THÍCH CHI TIẾT (Ms Lê Hằng English):</h4>
+          <p><strong>1. Phân tích & Dịch nghĩa:</strong> ${q.explanation.step1}</p>
+          <p><strong>2. Xem xét các đáp án:</strong><br>${q.explanation.step2}</p>
+          <p><strong>3. Tại sao chọn đáp án đúng?</strong> ${q.explanation.step3}</p>
+          <p><strong>4. Lý do các đáp án còn lại chưa đúng:</strong> ${q.explanation.step4}</p>
+        `;
+        card.appendChild(expBox);
+
+        p8Container.appendChild(card);
+      });
+    }
+
+    function handleSelectAnswer(qIndex, optIndex, isCorrect, cardElement) {
+      if (userAnswers[qIndex] !== undefined) return;
+
+      userAnswers[qIndex] = isCorrect;
+      const buttons = cardElement.querySelectorAll('.btn-option');
+
+      buttons.forEach((btn, idx) => {
+        btn.disabled = true;
+        if (idx === optIndex) {
+          if (isCorrect) {
+            btn.classList.add('correct');
+            playSound('correct');
+            confetti({
+              particleCount: 50,
+              spread: 60,
+              origin: { y: 0.7 }
+            });
+          } else {
+            btn.classList.add('wrong');
+            playSound('wrong');
+            cardElement.classList.add('shake');
+            setTimeout(() => cardElement.classList.remove('shake'), 500);
+          }
+        }
+        
+        if (!isCorrect && processedQuestions[qIndex].shuffledOptions[idx].isCorrect) {
+          btn.classList.add('correct');
+        }
+      });
+
+      document.getElementById(`exp-${qIndex}`).style.display = 'block';
+    }
+
+    function submitQuiz() {
+      const total = processedQuestions.length;
+      let score = 0;
+      
+      for (let i = 0; i < total; i++) {
+        if (userAnswers[i] === true) {
+          score++;
+        }
+      }
+
+      const percent = (score / total) * 100;
+      document.getElementById('scoreText').innerText = `${score} / ${total} Câu`;
+
+      let msg = "";
+      if (percent < 50) {
+        msg = "Điểm lần này chưa cao lắm, con cố gắng đọc kỹ giải thích đáp án và làm lại nha. Cô tin con sẽ làm tốt hơn ở lần sau! 💖";
+      } else if (percent <= 80) {
+        msg = "Con đã có tiến bộ khá ổn rồi, con cố gắng đọc kỹ giải thích đáp án và làm lại nha. Cô tin con sẽ làm tốt hơn ở lần sau! ⭐";
+      } else {
+        msg = "Làm tốt lắm, con cố gắng ring điểm 10 ở lần sau nha! 🎉🏆";
+      }
+
+      document.getElementById('teacherMessage').innerText = msg;
+      document.getElementById('resultModal').style.display = 'flex';
+
+      if (percent >= 80) {
+        confetti({
+          particleCount: 150,
+          spread: 100,
+          origin: { y: 0.5 }
+        });
+      }
+    }
+
+    function closeModal() {
+      document.getElementById('resultModal').style.display = 'none';
+    }
+
+    window.onload = initQuiz;
+  </script>
+</body>
+</html>
